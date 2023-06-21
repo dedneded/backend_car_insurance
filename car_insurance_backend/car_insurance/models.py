@@ -16,12 +16,15 @@ class Employee(models.Model):
     FIO = models.CharField(max_length=255)
     Phone = models.CharField(max_length=255)
     Email = models.CharField(max_length=255)
+    Password = models.CharField(max_length=255)
+    DateOfBirth = models.DateTimeField(null=False, blank=False)
     DateAdd = models.DateTimeField(null=False, blank=False, default=datetime.now())
     DateDel = models.DateTimeField(null=True, blank=True)
     objects = models.Manager()
 
     def __repr__(self):
-        return f"Employee(FIO='{self.FIO}', Phone='{self.Phone}', Email='{self.Email}', DateAdd='{self.DateAdd}',DateDel ='{self.DateDel}')"
+        return f"Employee(FIO='{self.FIO}', Phone='{self.Phone}', Email='{self.Email}',Password='{self.Password}'," \
+               f", DateAdd='{self.DateAdd}',DateOfBirth='{self.DateOfBirth}',DateDel ='{self.DateDel}')"
 
 
 class Passport(models.Model):

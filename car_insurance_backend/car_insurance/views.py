@@ -12,9 +12,12 @@ from django.http import HttpResponse
 @api_view(['POST'])
 def create_client(request):
     serializer = ClientSerializer(data=request.data)
+
     if serializer.is_valid():
-        #serializer.save()
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -30,6 +33,16 @@ def update_client(request, pk):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def get_client(request, pk):
+    try:
+        client = Client.objects.get(pk=pk)
+        serializer = ClientSerializer(client)
+        return Response(serializer.data)
+    except ObjectDoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['DELETE'])
@@ -54,6 +67,39 @@ def create_employee(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['PUT'])
+def update_employee(request, pk):
+    try:
+        print(pk)
+        employee = Employee.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = EmployeeSerializer(employee, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def get_employee(request, pk):
+    try:
+        employee = Employee.objects.get(pk=pk)
+        serializer = EmployeeSerializer(employee)
+        return Response(serializer.data)
+    except ObjectDoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+@api_view(['DELETE'])
+def delete_employee(request, pk):
+    try:
+        employee = Employee.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    employee.DateDel = datetime.now()
+    employee.save()
+
+    return Response(status=status.HTTP_204_NO_CONTENT)

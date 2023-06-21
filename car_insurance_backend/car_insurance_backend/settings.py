@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'car_insurance_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'insurance',
+        'NAME': 'insurancedb',
         'USER': 'user',
         'PASSWORD': '12345',
         'HOST': 'localhost',

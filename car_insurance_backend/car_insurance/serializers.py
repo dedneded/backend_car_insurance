@@ -1,13 +1,6 @@
 from rest_framework import serializers
 from .models import *
-
-
-class ClientSerializer(serializers.ModelSerializer):
-    DateDel = serializers.DateTimeField(allow_null=True, required=False)
-
-    class Meta:
-        model = Client
-        fields = ['Phone', 'Email', 'DateAdd', 'DateDel']
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -15,7 +8,18 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Employee
-        fields = ['FIO', 'Phone', 'Email', 'DateAdd', 'DateDel']
+
+        fields = ['id','FIO', 'Phone', 'Email', 'Password', 'DateOfBirth', 'DateAdd', 'DateDel']
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    Employee = serializers.PrimaryKeyRelatedField(queryset=Employee.objects.all())
+    class Meta:
+        model = Client
+        fields = ['Phone', 'Email', 'DateAdd', 'DateDel', 'Employee']
+
+
+
 
 
 class PassportPhotoSerializer(serializers.ModelSerializer):

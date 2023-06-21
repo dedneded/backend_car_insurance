@@ -22,8 +22,12 @@ from car_insurance.views import *
 urlpatterns = [
 
     path('clients/create_client/', create_client, name='create_client'),
+    path('clients/update_client/<int:pk>/', update_client, name='update_client'),
+    path('clients/get_client/<int:pk>/', get_client, name='get_client'),
     path('employees/create_employee/', create_employee, name='create_employee'),
-
+    path('employees/update_employee/<int:pk>/', update_employee, name='update_employee'),
+    path('employees/get_employee/<int:pk>/', get_employee, name='get_employee'),
+    path('employees/delete_employee/<int:pk>/', delete_employee, name='delete_employee'),
     #path('clients/', create_client, name='create_client'),
     path('clients/<int:pk>/', update_client),
     path('clients/<int:pk>/delete/', delete_client)
