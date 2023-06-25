@@ -16,40 +16,58 @@ class ClientSerializer(serializers.ModelSerializer):
     Employee = serializers.PrimaryKeyRelatedField(queryset=Employee.objects.all())
     class Meta:
         model = Client
-        fields = ['Phone', 'Email', 'DateAdd', 'DateDel', 'Employee']
-
-
-
+        fields = ['id','Phone', 'Email', 'DateAdd', 'DateDel', 'Employee']
 
 
 class PassportPhotoSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = PassportPhoto
         fields = '__all__'
 
 
 class PassportSerializer(serializers.ModelSerializer):
-    Photos = PassportPhotoSerializer(many=True, read_only=False)
+    Photos = PassportPhotoSerializer(many=True, required=False)
+    Client = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all())
 
     class Meta:
         model = Passport
-        fields = ['IssuedByWhom', 'DateOfIssue', 'DivisionCode', 'Series', 'Number', 'FIO', 'IsMale',
-                  'DateOfBirth', 'PlaceOfBirth', 'ResidenceAddress', 'Client', 'Photos']
+        fields = '__all__'
 
+    def create(self, validated_data):
+        photos_data = validated_data.pop('photos', None)
+        passport = Passport.objects.create(**validated_data)
+
+        if photos_data:
+            for photo_data in photos_data:
+                PassportPhoto.objects.create(passport=passport, **photo_data)
+
+        return passport
 
 class LicensePhotoSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = LicensePhoto
         fields = '__all__'
 
 
 class LicenseSerializer(serializers.ModelSerializer):
-    Photos = LicensePhotoSerializer(many=True, read_only=False)
+    Photos = PassportPhotoSerializer(many=True, required=False)
+    Client = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all())
 
     class Meta:
-        model = License
-        fields = ['DateOfIssue', 'ExpirationDate', 'CodeGIBDD', 'Series', 'Number', 'TransmissionType',
-                  'VehicleCategories', 'Client', 'Photos']
+            model = License
+            fields = '__all__'
+
+    def create(self, validated_data):
+        photos_data = validated_data.pop('photos', None)
+        license = License.objects.create(**validated_data)
+
+        if photos_data:
+            for photo_data in photos_data:
+                LicensePhoto.objects.create(license=license, **photo_data)
+
+        return license
 
 
 class CarPhotoSerializer(serializers.ModelSerializer):
@@ -59,13 +77,20 @@ class CarPhotoSerializer(serializers.ModelSerializer):
 
 
 class CarSerializer(serializers.ModelSerializer):
-    Photos = CarPhotoSerializer(many=True, read_only=False)
+    Photos = PassportPhotoSerializer(many=True, required=False)
+    Client = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all())
 
     class Meta:
         model = Car
-        fields = ['RegistrationNumber', 'IdNumber', 'Brand', 'Model', 'TCType', 'TCCategory', 'YearOfIssue',
-                  'EngineModel', 'EngineNumber', 'ChassisNumber', 'CarBodyNumber', 'Color', 'EnginePower',
-                  'EngineDisplacement', 'Series', 'Number', 'MaxWeightPermitted', 'WeightWithoutCapacity',
-                  'NameOwner', 'PlaceRegistration', 'PlaceOfIssue', 'DateOfIssue', 'Client', 'Photos']
+        fields = '__all__'
 
+    def create(self, validated_data):
+        photos_data = validated_data.pop('photos', None)
+        car = Car.objects.create(**validated_data)
+
+        if photos_data:
+            for photo_data in photos_data:
+                CarPhoto.objects.create(car=car, **photo_data)
+
+        return car
 
