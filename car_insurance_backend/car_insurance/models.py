@@ -38,6 +38,7 @@ class Passport(models.Model):
     DateOfBirth = models.DateTimeField(null=False, blank=False, default=date.today())
     PlaceOfBirth = models.CharField(max_length=500)
     ResidenceAddress = models.CharField(max_length=500)
+    DateDel = models.DateTimeField(null=True, blank=True)
     Client = models.ForeignKey('Client', on_delete=models.PROTECT)
     Photos = models.ManyToManyField('PassportPhoto', null=True, blank=True)
     objects = models.Manager()
@@ -51,6 +52,7 @@ class License(models.Model):
     Number = models.CharField(max_length=255)
     TransmissionType = models.CharField(max_length=255)
     VehicleCategories = models.CharField(max_length=255)
+    DateDel = models.DateTimeField(null=True, blank=True)
     Client = models.ForeignKey('Client', on_delete=models.PROTECT)
     Photos = models.ManyToManyField('LicensePhoto', null=True, blank=True)
     objects = models.Manager()
@@ -79,21 +81,22 @@ class Car(models.Model):
     PlaceRegistration = models.CharField(max_length=255)
     PlaceOfIssue = models.CharField(max_length=255)
     DateOfIssue = models.DateTimeField(null=False, blank=False)
+    DateDel = models.DateTimeField(null=True, blank=True)
     Client = models.ForeignKey('Client', on_delete=models.PROTECT)
     Photos = models.ManyToManyField('CarPhoto', null=True, blank=True)
     objects = models.Manager()
 
 
 class PassportPhoto(models.Model):
-    date_delete = models.DateTimeField(null=True, blank=True)
-    photo_path = models.ImageField(upload_to="photos/")
+    DateDel = models.DateTimeField(null=True, blank=True)
+    Path = models.ImageField(upload_to="photos/")
 
 
 class LicensePhoto(models.Model):
-    date_delete = models.DateTimeField(null=True, blank=True)
-    photo_path = models.ImageField(upload_to="photos/")
+    DateDel = models.DateTimeField(null=True, blank=True)
+    Path = models.ImageField(upload_to="photos/")
 
 
 class CarPhoto(models.Model):
-    date_delete = models.DateTimeField(null=True, blank=True)
-    photo_path = models.ImageField(upload_to="photos/")
+    DateDel = models.DateTimeField(null=True, blank=True)
+    Path = models.ImageField(upload_to="photos/")

@@ -20,11 +20,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-pw2ec&8wrrqm2!*8_(0x16+wgfo4f94i&i1ud*9)oj2+p)eo(!'
-
+# SECRET_KEY = 'django-insecure-pw2ec&8wrrqm2!*8_(0x16+wgfo4f94i&i1ud*9)oj2+p)eo(!'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+# DEBUG = False
+DEBUG = bool( os.environ.get('DJANGO_DEBUG', True))
 ALLOWED_HOSTS = []
 
 
@@ -77,11 +77,16 @@ WSGI_APPLICATION = 'car_insurance_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'insurancedb',
-        'USER': 'user',
-        'PASSWORD': '12345',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        #'NAME': 'insurancedb',
+        # 'USER': 'user',
+        # 'PASSWORD': '12345',
+        # 'HOST': 'localhost',
+        # 'PORT': '5432'
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'blayILTal0vUfmOktwLd',
+        'HOST': 'containers-us-west-93.railway.app',
+        'PORT': '5824'
     }
 }
 
